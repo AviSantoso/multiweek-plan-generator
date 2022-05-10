@@ -2,7 +2,7 @@ import { Center, GridItem, FormLabel, Select } from "@chakra-ui/react";
 import { useMemo } from "react";
 import slugify from "slugify";
 
-export interface SelectOption {
+export interface AviSelectOption {
   value: string;
   text: string;
 }
@@ -11,7 +11,7 @@ export interface AviSelectProps {
   label: string;
   value: string;
   onValue: (value: string) => void;
-  options: SelectOption[];
+  options: AviSelectOption[];
 }
 
 export function AviSelect({ label, value, onValue, options }: AviSelectProps) {
@@ -25,6 +25,7 @@ export function AviSelect({ label, value, onValue, options }: AviSelectProps) {
       </Center>
       <Center as={GridItem}>
         <Select
+          fontSize="0.9em"
           id={name}
           value={value}
           onChange={(e) => onValue(e.target.value)}
