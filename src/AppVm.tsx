@@ -17,6 +17,8 @@ export class AppVm implements IViewModel {
   public starting: string;
   public text: string;
 
+  public divisions: IDivision[];
+
   public isReady: boolean;
 
   constructor() {
@@ -31,6 +33,8 @@ export class AppVm implements IViewModel {
     this.count = "";
     this.starting = "";
     this.text = "";
+
+    this.divisions = [];
 
     makeAutoObservable(this, {}, { autoBind: true });
   }
@@ -65,6 +69,8 @@ export class AppVm implements IViewModel {
     this.starting = this.startingOptions[0].value;
     this.text = "My one thing for this division is...";
 
+    this.refreshDivisions();
+
     this.isReady = true;
   }
 
@@ -88,7 +94,7 @@ export class AppVm implements IViewModel {
     this.text = text;
   }
 
-  public getDivisions() {
+  public refreshDivisions() {
     const divisions: IDivision[] = [];
     for (let i = 0; i < parseInt(this.count); i++) {
       const startingWeeks = parseInt(this.division) * i;
@@ -102,6 +108,6 @@ export class AppVm implements IViewModel {
         text: this.text,
       });
     }
-    return divisions;
+    this.divisions = divisions;
   }
 }

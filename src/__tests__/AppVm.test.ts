@@ -56,22 +56,28 @@ describe("AppVm", () => {
   });
 
   test("can create correct divisions from data", () => {
-    const divisions = vm.getDivisions();
+    expect(vm.divisions.length).toBe(8);
 
-    expect(divisions.length).toBe(8);
-
-    expect(divisions[0]).toEqual({
+    expect(vm.divisions[0]).toEqual({
       number: "1",
       starting: "Mon 09 May",
       ending: "Sun 15 May",
       text: "My one thing for this division is...",
     });
 
-    expect(divisions.at(-1)).toEqual({
+    expect(vm.divisions.at(-1)).toEqual({
       number: "8",
       starting: "Mon 27 Jun",
       ending: "Sun 03 Jul",
       text: "My one thing for this division is...",
     });
+  });
+
+  test("can refresh the state of divisions", () => {
+    expect(vm.divisions.length).toBe(8);
+    vm.setCount("9");
+    expect(vm.divisions.length).toBe(8);
+    vm.refreshDivisions();
+    expect(vm.divisions.length).toBe(9);
   });
 });

@@ -8,11 +8,12 @@ import {
   Heading,
   Spacer,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
-import { PDFViewer, usePDF } from "@react-pdf/renderer";
-import FileSaver from "file-saver";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { observer } from "mobx-react-lite";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
+import useMeasure from "react-use-measure";
 
 import { AppVm } from "./AppVm";
 import { AviInput } from "./components/avi/AviInput";
@@ -21,28 +22,34 @@ import { AviTextarea } from "./components/avi/AviTextarea";
 import { PlannerDocument } from "./components/PlannerDocument";
 
 export const App = observer(() => {
+  const toast = useToast();
   const vm = useMemo(() => new AppVm(), []);
 
   useEffect(() => {
     vm.init();
   }, [vm]);
 
-  const divisions = vm.getDivisions();
+  const divisions = useMemo(
+    () => JSON.parse(JSON.stringify(vm.divisions)),
+    [vm.divisions]
+  );
 
-  const ref = useRef<HTMLDivElement>(null);
-
-  const [instance, updateInstance] = usePDF({
-    document: <PlannerDocument title={vm.title} divisions={divisions} />,
-  });
+  const [ref, bounds] = useMeasure();
 
   if (!vm.isReady) {
     return null;
   }
 
-  async function onGeneratePDF() {
-    updateInstance();
-    if (instance.blob) {
-      FileSaver(instance.blob, "planner.pdf");
+  async function onRefreshPreview() {
+    try {
+      vm.refreshDivisions();
+      toast({
+        description: "Successfully refreshed preview.",
+        status: "success",
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({ description: "" + error, status: "error", isClosable: true });
     }
   }
 
@@ -61,7 +68,7 @@ export const App = observer(() => {
       >
         <Stack gap={4} flex={1}>
           <Box ref={ref} flex={1}>
-            <PDFViewer width="100%" height={ref.current?.clientHeight}>
+            <PDFViewer width="100%" height={bounds.height}>
               <PlannerDocument title={vm.title} divisions={divisions} />
             </PDFViewer>
           </Box>
@@ -83,6 +90,9 @@ export const App = observer(() => {
               <Divider />
             </GridItem>
             <AviInput label="Title" value={vm.title} onValue={vm.setTitle} />
+            <GridItem colSpan={2}>
+              <Divider />
+            </GridItem>
             <AviSelect
               label="Division"
               options={vm.divisionOptions}
@@ -106,16 +116,36 @@ export const App = observer(() => {
               value={vm.text}
               onValue={vm.setText}
             />
+            <GridItem colSpan={2}>
+              <Button
+                w="full"
+                variant="outline"
+                colorScheme="blue"
+                onClick={onRefreshPreview}
+              >
+                Refresh Preview
+              </Button>
+            </GridItem>
           </Grid>
           <Spacer />
-          <Button
-            w="full"
-            variant="outline"
-            colorScheme="orange"
-            onClick={onGeneratePDF}
+          <PDFDownloadLink
+            document={
+              <PlannerDocument title={vm.title} divisions={divisions} />
+            }
+            fileName="planner.pdf"
           >
-            Download as PDF
-          </Button>
+            {({ loading, error }) => (
+              <Button
+                w="full"
+                variant="outline"
+                colorScheme="orange"
+                disabled={loading}
+                pointerEvents="none"
+              >
+                {error ? error : "Download Preview"}
+              </Button>
+            )}
+          </PDFDownloadLink>
         </Stack>
       </Grid>
     </Center>
