@@ -40,10 +40,7 @@
     "dev": "yarn start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "lint": "npx eslint src/* --fix"
   },
   "browserslist": {
     "production": [
@@ -58,6 +55,10 @@
     ]
   },
   "devDependencies": {
-    "@types/file-saver": "^2.0.5"
+    "@types/file-saver": "^2.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
+    "eslint": "^8.15.0",
+    "eslint-plugin-react": "^7.29.4"
   }
 }

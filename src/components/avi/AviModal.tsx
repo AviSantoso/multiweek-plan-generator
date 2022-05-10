@@ -1,17 +1,17 @@
 import {
   Modal,
-  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
+  ModalOverlay,
 } from "@chakra-ui/react";
 
 interface AvModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  children: any;
+  children: React.ReactNode;
 }
 
 export function AvModal({ isOpen, onClose, title, children }: AvModalProps) {

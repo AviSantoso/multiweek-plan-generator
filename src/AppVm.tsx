@@ -48,7 +48,7 @@ export class AppVm implements IViewModel {
 
     this.startingOptions = (() => {
       const options = [];
-      let time = moment().day(1);
+      const time = moment().day(1);
       for (let i = 0; i < 8; i++) {
         const value = time.toISOString();
         const text = toDate(time);
