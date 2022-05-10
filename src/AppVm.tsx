@@ -1,3 +1,4 @@
+import { makeAutoObservable } from "mobx";
 import moment from "moment";
 
 import { AviSelectOption } from "./components/avi/AviSelect";
@@ -21,6 +22,20 @@ export class AppVm implements IViewModel {
   constructor() {
     this.isReady = false;
 
+    this.divisionOptions = [];
+    this.countOptions = [];
+    this.startingOptions = [];
+
+    this.title = "";
+    this.division = "";
+    this.count = "";
+    this.starting = "";
+    this.text = "";
+
+    makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  async init() {
     this.divisionOptions = [
       { value: "1", text: "Week" },
       { value: "2", text: "Fortnight" },
@@ -49,9 +64,7 @@ export class AppVm implements IViewModel {
     this.count = this.countOptions[0].value;
     this.starting = this.startingOptions[0].value;
     this.text = "My one thing for this division is...";
-  }
 
-  async init() {
     this.isReady = true;
   }
 

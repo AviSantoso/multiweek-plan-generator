@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { PDFViewer, usePDF } from "@react-pdf/renderer";
 import FileSaver from "file-saver";
+import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useRef } from "react";
 
 import { AppVm } from "./AppVm";
@@ -19,7 +20,7 @@ import { AviSelect } from "./components/avi/AviSelect";
 import { AviTextarea } from "./components/avi/AviTextarea";
 import { PlannerDocument } from "./components/PlannerDocument";
 
-export function App() {
+export const App = observer(() => {
   const vm = useMemo(() => new AppVm(), []);
 
   useEffect(() => {
@@ -119,4 +120,4 @@ export function App() {
       </Grid>
     </Center>
   );
-}
+});
