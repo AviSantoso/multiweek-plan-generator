@@ -31,7 +31,9 @@ export function AviSelect({ label, value, onValue, options }: AviSelectProps) {
           placeholder="Select option"
         >
           {options.map((option) => (
-            <option value={option.value}>{option.text}</option>
+            <option key={option.value} value={option.value}>
+              {option.text}
+            </option>
           ))}
         </Select>
       </Center>
