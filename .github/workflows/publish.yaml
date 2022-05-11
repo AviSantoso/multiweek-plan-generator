@@ -4,10 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
+  cicd:
+    uses: USER_OR_ORG_NAME/REPO_NAME/.github/workflows/REUSABLE_WORKFLOW_FILE.yml@TAG_OR_BRANCH
+
   publish:
+    needs: cicd
     runs-on: ubuntu-latest
     steps:
-    - uses: AviSantoso/multiweek-plan-generator/.github/workflows/cicd.yml@main
 
     - name: "checkout repository"
       uses: actions/checkout@v3
@@ -16,7 +19,7 @@ jobs:
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-    
+
     - name: "build and deploy docker image"
       uses: ripplr-io/docr-docker-publish@v1
       with:
