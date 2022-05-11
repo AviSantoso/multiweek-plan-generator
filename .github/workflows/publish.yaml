@@ -23,4 +23,4 @@ jobs:
     - name: "build and deploy docker image"
       uses: ripplr-io/docr-docker-publish@v1
       with:
-        image_path: registry.digitalocean.com/dev-2ehuyma3n35v/multiweek-plan-generator
+        image_path: dev-2ehuyma3n35v/multiweek-plan-generator
