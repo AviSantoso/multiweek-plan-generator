@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  buildImage:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+    # Checks out the repository this file is in
+    - uses: actions/checkout@v3
+    
+    - name: DigitalOcean Docker Image Publish
+      uses: ripplr-io/docr-docker-publish@v1
+      with:
+        image_path: registry.digitalocean.com/dev-2ehuyma3n35v/multiweek-plan-generator
