@@ -5,7 +5,7 @@ on:
 
 jobs:
   cicd:
-    uses: USER_OR_ORG_NAME/REPO_NAME/.github/workflows/REUSABLE_WORKFLOW_FILE.yml@TAG_OR_BRANCH
+    uses: AviSantoso/multiweek-plan-generator/.github/workflows/cicd.yml@main
 
   publish:
     needs: cicd
