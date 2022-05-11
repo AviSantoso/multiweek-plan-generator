@@ -1,56 +1,53 @@
-name: Integration
+name: "CI / CD"
 
 on:
   push:
-    branches:
-    - main
   pull_request:
     types:
       - opened
       - edited
       - synchronize
       - reopened
+      - closed
   workflow_call:
 
 jobs:
   test:
-    name: Test
     runs-on: ubuntu-latest
     steps:
-      - name: "☁️ checkout repository"
+      - name: "checkout repository"
         uses: actions/checkout@v2
 
-      - name: "🔧 setup node"
+      - name: "setup node"
         uses: actions/setup-node@v3.1.1
         with:
-          node-version: 16
+          node-version: 18
 
-      - name: "🔧 install npm@latest"
+      - name: "install npm@latest"
         run: npm i -g npm@latest
 
-      - name: "📦 install dependencies"
+      - name: "install dependencies"
         uses: bahmutov/npm-install@v1
 
-      - name: "🔍 run tests"
+      - name: "run tests"
         run: npm run test --if-present
 
   lint:
-    name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: "☁️ checkout repository"
+      - name: "checkout repository"
         uses: actions/checkout@v2
 
-      - name: "🔧 setup node"
+      - name: "setup node"
         uses: actions/setup-node@v3.1.1
         with:
-          node-version: 16
+          node-version: 18
 
-      - name: "🔧 install npm@latest"
+      - name: "install npm@latest"
         run: npm i -g npm@latest
 
-      - name: "📦 install dependencies"
+      - name: "install dependencies"
         uses: bahmutov/npm-install@v1
 
-      - name: "🔍 lint code"
+      - name: "lint code"
         run: npm run lint --if-present

@@ -1,22 +1,23 @@
-name: Deploy
+name: "Publish to Digital Ocean"
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
-  buildImage:
-    permissions:
-      contents: read
-      id-token: write
+  publish:
     runs-on: ubuntu-latest
     steps:
-    # Checks out the repository this file is in
-    - uses: actions/checkout@v3
+    - uses: ./.github/workflows/cicd.yml
+
+    - name: "checkout repository"
+      uses: actions/checkout@v3
+
+    - name: "install doctl"
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     
-    - name: DigitalOcean Docker Image Publish
+    - name: "build and deploy docker image"
       uses: ripplr-io/docr-docker-publish@v1
       with:
         image_path: registry.digitalocean.com/dev-2ehuyma3n35v/multiweek-plan-generator
